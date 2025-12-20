@@ -269,4 +269,4 @@ Contributions are welcome! Please read our contributing guidelines and submit pu
 
 ---
 
-**Note**: This is the advanced version with specialised agents. For a simpler implementation, see the `repo/` directory which contains the basic Alfred Butler agent.
+**Note**: This is the advanced version with specialised agents. For a simpler implementation, see the [repository](https://github.com/Machine-Learning-Labs/strands-agent-bridge-open-web-ui) which contains the basic Alfred Butler agent.
