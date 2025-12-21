@@ -88,10 +88,17 @@ class TestAgentsEndpoints:
         assert "agents_by_category" in data
         assert "categories" in data
         assert "total_agents" in data
-        
+
         # Check we have the expected agents
         agent_ids = [agent["id"] for agent in data["agents"]]
-        expected_agents = ["calculator", "python-repl", "http-request", "file-read", "file-write", "tavily-search"]
+        expected_agents = [
+            "calculator",
+            "python-repl",
+            "http-request",
+            "file-read",
+            "file-write",
+            "tavily-search",
+        ]
         for agent_id in expected_agents:
             assert agent_id in agent_ids
 
@@ -123,7 +130,7 @@ class TestAgentsEndpoints:
         assert data["category"] == "utility"
         assert "agents" in data
         assert "count" in data
-        
+
         # Check utility agents are present
         agent_ids = [agent["id"] for agent in data["agents"]]
         assert "calculator" in agent_ids
@@ -159,7 +166,7 @@ class TestChatCompletionsEndpoint:
             ],
             usage=Usage(prompt_tokens=10, completion_tokens=5, total_tokens=15),
         )
-        
+
         # Configure the AsyncMock to return the response
         mock_process_chat_completion.return_value = mock_response
 
@@ -212,7 +219,7 @@ class TestOpenAICompatibility:
             ],
             usage=Usage(prompt_tokens=5, completion_tokens=2, total_tokens=7),
         )
-        
+
         # Configure the AsyncMock to return the response
         mock_process_chat_completion.return_value = mock_response
 
