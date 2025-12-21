@@ -19,7 +19,6 @@ from .models import (
     ChatCompletionChoice,
     Usage,
 )
-from .agent import create_alfred_agent
 from .registry import AgentRegistry
 
 
@@ -27,8 +26,8 @@ class ChatService:
     """Service class handling chat completion logic and message processing."""
 
     def __init__(self):
-        """Initialize the chat service with Alfred agent."""
-        self.alfred = create_alfred_agent()
+        """Initialize the chat service."""
+        pass
 
     def parse_image_url(self, image_url: str) -> bytes:
         """Parse image URL and return image bytes."""
@@ -163,7 +162,7 @@ class ChatService:
 
         Args:
             request: Chat completion request with messages
-            agent_id: Optional agent ID to use (defaults to Alfred)
+            agent_id: Optional agent ID to use (defaults to Alfred Butler)
 
         Returns:
             Chat completion response with agent's reply
@@ -179,17 +178,19 @@ class ChatService:
                 user_messages[-1]
             )
 
-            # Choose agent based on agent_id parameter
-            if agent_id and agent_id != "alfred-butler":
-                try:
-                    # Use specialised agent
-                    specialised_agent = AgentRegistry.create_agent(agent_id)
-                    response_text = await specialised_agent.ainvoke(last_message_content)
-                except ValueError as e:
-                    raise HTTPException(status_code=404, detail=str(e))
-            else:
-                # Use default Alfred agent
-                response_text = await self.alfred.ainvoke(last_message_content)
+            # Use specified agent or default to Alfred Butler
+            target_agent_id = agent_id or "alfred-butler"
+
+            try:
+                # Create agent instance through registry
+                agent = AgentRegistry.create_agent(target_agent_id)
+                response_text = await agent.ainvoke(last_message_content)
+            except ValueError as e:
+                error_msg = str(e)
+                if "not found" in error_msg:
+                    raise HTTPException(status_code=404, detail=error_msg)
+                else:
+                    raise HTTPException(status_code=400, detail=error_msg)
 
             # Estimate token usage
             usage = self.estimate_token_usage(request.messages, response_text)

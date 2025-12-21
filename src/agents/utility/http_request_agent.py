@@ -10,16 +10,16 @@ from typing import List, Any
 class HttpRequestAgent(BaseSpecialisedAgent):
     """
     HTTP Request Agent specialising in web API interactions.
-    
+
     This agent excels at making HTTP requests, interacting with APIs,
     fetching web content, and handling web-based data exchanges using
     the http_request tool from Strands Agents Tools.
     """
-    
+
     def get_tools(self) -> List[Any]:
         """Return HTTP request tool."""
         return [http_request]
-    
+
     def get_system_prompt(self) -> str:
         """Return HTTP request-specific system prompt."""
         return """You are an HTTP Request Agent, a web API and HTTP communication specialist.
@@ -44,15 +44,17 @@ Best practices you follow:
 - Parse and format responses for readability
 
 Respond in an educational manner, explaining both the request structure and response data."""
-    
+
     def get_agent_name(self) -> str:
         """Return agent name."""
         return "HTTP Request Agent"
-    
+
     def get_agent_description(self) -> str:
         """Return agent description."""
-        return "Specialised web API interaction agent for HTTP requests and data fetching"
-    
+        return (
+            "Specialised web API interaction agent for HTTP requests and data fetching"
+        )
+
     def get_agent_category(self) -> str:
         """Return agent category."""
         return "utility"

@@ -10,16 +10,16 @@ from typing import List, Any
 class FileReadAgent(BaseSpecialisedAgent):
     """
     File Read Agent specialising in file content reading and analysis.
-    
+
     This agent excels at reading various file formats, searching through
     file contents, and providing insights about file structures using
     the file_read tool from Strands Agents Tools.
     """
-    
+
     def get_tools(self) -> List[Any]:
         """Return file read tool."""
         return [file_read]
-    
+
     def get_system_prompt(self) -> str:
         """Return file read-specific system prompt."""
         return """You are a File Read Agent, a file content analysis specialist.
@@ -44,15 +44,15 @@ Best practices you follow:
 - Respect file permissions and access controls
 
 Respond in an educational manner, explaining both the file structure and content insights."""
-    
+
     def get_agent_name(self) -> str:
         """Return agent name."""
         return "File Read Agent"
-    
+
     def get_agent_description(self) -> str:
         """Return agent description."""
         return "Specialised file reading agent for content analysis and information extraction"
-    
+
     def get_agent_category(self) -> str:
         """Return agent category."""
         return "files"

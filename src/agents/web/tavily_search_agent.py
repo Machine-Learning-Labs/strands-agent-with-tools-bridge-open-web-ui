@@ -11,60 +11,60 @@ from typing import List, Any
 class TavilySearchAgent(BaseSpecialisedAgent):
     """
     Tavily Search Agent specialising in real-time web search.
-    
+
     This agent excels at performing intelligent web searches,
     finding current information, and retrieving relevant content
     using the tavily_search tool from Strands Agents Tools.
-    
+
     Requires TAVILY_API_KEY environment variable to be set.
     """
-    
+
     def __init__(self, *args, **kwargs):
         """
         Initialise the Tavily Search Agent.
-        
+
         Validates that the TAVILY_API_KEY environment variable is set
         before initialising the parent class.
-        
+
         Raises:
             ValueError: If TAVILY_API_KEY is not set or is empty
         """
         self._validate_tavily_api_key()
         super().__init__(*args, **kwargs)
-    
+
     def _validate_tavily_api_key(self) -> None:
         """
         Validate that the Tavily API key is properly configured.
-        
+
         Raises:
             ValueError: If TAVILY_API_KEY is not set or is empty
         """
         api_key = os.getenv("TAVILY_API_KEY")
-        
+
         if not api_key:
             raise ValueError(
                 "TAVILY_API_KEY environment variable is required for the Tavily Search Agent. "
                 "Please set it in your .env file or environment variables. "
                 "You can get an API key from https://tavily.com/"
             )
-        
+
         if api_key.strip() == "":
             raise ValueError(
                 "TAVILY_API_KEY environment variable is empty. "
                 "Please provide a valid Tavily API key."
             )
-        
+
         # Check if it's still the example placeholder
         if api_key.startswith("tvly-***-"):
             raise ValueError(
                 "TAVILY_API_KEY appears to be the example placeholder. "
                 "Please replace it with your actual Tavily API key from https://tavily.com/"
             )
-    
+
     def get_tools(self) -> List[Any]:
         """Return Tavily search tool."""
         return [tavily_search]
-    
+
     def get_system_prompt(self) -> str:
         """Return Tavily search-specific system prompt."""
         return """You are a Tavily Search Agent, a real-time web search and information retrieval specialist.
@@ -93,15 +93,17 @@ Important: If you encounter any issues with the Tavily API (such as authenticati
 inform the user that they may need to check their TAVILY_API_KEY configuration.
 
 Respond in an educational manner, explaining both your search approach and the information found."""
-    
+
     def get_agent_name(self) -> str:
         """Return agent name."""
         return "Tavily Search Agent"
-    
+
     def get_agent_description(self) -> str:
         """Return agent description."""
-        return "Specialised real-time web search agent for current information retrieval"
-    
+        return (
+            "Specialised real-time web search agent for current information retrieval"
+        )
+
     def get_agent_category(self) -> str:
         """Return agent category."""
         return "web"

@@ -34,7 +34,7 @@ async def root():
             "models": "/v1/models",
             "chat": "/v1/chat/completions",
             "agents": "/v1/agents",
-            "agent_info": "/v1/agents/{agent_id}"
+            "agent_info": "/v1/agents/{agent_id}",
         },
         "specialised_agents": len(AgentRegistry.list_agents()),
     }
@@ -55,31 +55,25 @@ async def list_models() -> ModelList:
     including the default Alfred agent and all specialised agents.
     """
     models = [
-        Model(
-            id="alfred-butler", 
-            created=int(time.time()), 
-            owned_by="strands-agents"
-        )
+        Model(id="alfred-butler", created=int(time.time()), owned_by="strands-agents")
     ]
-    
+
     # Add specialised agents as models
     for agent in AgentRegistry.list_agents():
         models.append(
-            Model(
-                id=agent["id"],
-                created=int(time.time()),
-                owned_by="strands-agents"
-            )
+            Model(id=agent["id"], created=int(time.time()), owned_by="strands-agents")
         )
-    
+
     return ModelList(data=models)
 
 
 @app.post("/v1/chat/completions")
 async def create_chat_completion(
-    request: ChatCompletionRequest, 
+    request: ChatCompletionRequest,
     authorization: Optional[str] = Header(None),
-    agent_id: Optional[str] = Query(None, description="Specific agent to use (defaults to model from request)")
+    agent_id: Optional[str] = Query(
+        None, description="Specific agent to use (defaults to model from request)"
+    ),
 ) -> ChatCompletionResponse:
     """
     Create a chat completion (OpenAI-compatible endpoint).
@@ -103,7 +97,7 @@ async def create_chat_completion(
     # Determine which agent to use
     # Priority: agent_id query param > model from request body
     selected_agent = agent_id if agent_id else None
-    
+
     # If model is specified and it's not alfred-butler, use it as agent_id
     if not selected_agent and request.model != "alfred-butler":
         selected_agent = request.model
@@ -126,12 +120,12 @@ async def get_model(model_id: str) -> Model:
     # Check if it's Alfred
     if model_id == "alfred-butler":
         return Model(id=model_id, created=int(time.time()), owned_by="strands-agents")
-    
+
     # Check if it's a specialised agent
     agent_info = AgentRegistry.get_agent_info(model_id)
     if agent_info:
         return Model(id=model_id, created=int(time.time()), owned_by="strands-agents")
-    
+
     raise HTTPException(status_code=404, detail="Model not found")
 
 
@@ -139,7 +133,7 @@ async def get_model(model_id: str) -> Model:
 async def list_agents():
     """
     List all available specialised agents.
-    
+
     Returns:
         Dictionary containing all agents organised by category
     """
@@ -147,7 +141,7 @@ async def list_agents():
         "agents": AgentRegistry.list_agents(),
         "agents_by_category": AgentRegistry.list_agents_by_category(),
         "categories": AgentRegistry.get_available_categories(),
-        "total_agents": len(AgentRegistry.list_agents())
+        "total_agents": len(AgentRegistry.list_agents()),
     }
 
 
@@ -155,18 +149,18 @@ async def list_agents():
 async def get_agent_info(agent_id: str):
     """
     Get detailed information about a specific agent.
-    
+
     Args:
         agent_id: The unique identifier for the agent
-        
+
     Returns:
         Detailed agent information including tools and capabilities
     """
     agent_info = AgentRegistry.get_agent_info(agent_id)
     if not agent_info:
         raise HTTPException(
-            status_code=404, 
-            detail=f"Agent '{agent_id}' not found. Use /v1/agents to see available agents."
+            status_code=404,
+            detail=f"Agent '{agent_id}' not found. Use /v1/agents to see available agents.",
         )
     return agent_info
 
@@ -175,10 +169,10 @@ async def get_agent_info(agent_id: str):
 async def get_agents_by_category(category: str):
     """
     Get all agents in a specific category.
-    
+
     Args:
         category: The category name (utility, files, web, etc.)
-        
+
     Returns:
         List of agents in the specified category
     """
@@ -187,13 +181,13 @@ async def get_agents_by_category(category: str):
         available_categories = ", ".join(AgentRegistry.get_available_categories())
         raise HTTPException(
             status_code=404,
-            detail=f"Category '{category}' not found. Available categories: {available_categories}"
+            detail=f"Category '{category}' not found. Available categories: {available_categories}",
         )
-    
+
     return {
         "category": category,
         "agents": categorised_agents[category],
-        "count": len(categorised_agents[category])
+        "count": len(categorised_agents[category]),
     }
 
 
