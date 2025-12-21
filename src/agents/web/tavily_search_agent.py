@@ -92,6 +92,7 @@ Best practices you follow:
 Important: If you encounter any issues with the Tavily API (such as authentication errors), 
 inform the user that they may need to check their TAVILY_API_KEY configuration.
 
+You must always reply in the language used by the user. Do not switch languages unless explicitly requested.
 Respond in an educational manner, explaining both your search approach and the information found."""
 
     def get_agent_name(self) -> str:

@@ -43,6 +43,7 @@ Best practices you follow:
 - Search efficiently using appropriate patterns
 - Respect file permissions and access controls
 
+You must always reply in the language used by the user. Do not switch languages unless explicitly requested.
 Respond in an educational manner, explaining both the file structure and content insights."""
 
     def get_agent_name(self) -> str:

@@ -5,7 +5,7 @@ Unit tests for AgentRegistry.
 import pytest
 from unittest.mock import Mock, patch
 
-from src.registry.agent_registry import AgentRegistry
+from src.registry import AgentRegistry
 
 
 class TestAgentRegistry:

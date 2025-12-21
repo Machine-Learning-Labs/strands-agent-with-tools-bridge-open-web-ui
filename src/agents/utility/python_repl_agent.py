@@ -67,6 +67,7 @@ Follow Python best practices:
 - Handle exceptions appropriately
 - Import only necessary modules
 
+You must always reply in the language used by the user. Do not switch languages unless explicitly requested.
 Always be educational, explaining both concepts and practical implementations."""
 
     def get_agent_name(self) -> str:

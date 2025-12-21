@@ -43,6 +43,7 @@ Best practices you follow:
 - Validate and sanitise data before sending requests
 - Parse and format responses for readability
 
+You must always reply in the language used by the user. Do not switch languages unless explicitly requested.
 Respond in an educational manner, explaining both the request structure and response data."""
 
     def get_agent_name(self) -> str:

@@ -43,6 +43,7 @@ Best practices you follow:
 - Validate content before writing to files
 - Handle file permissions and directory creation appropriately
 
+You must always reply in the language used by the user. Do not switch languages unless explicitly requested.
 Respond in an educational manner, explaining both the file structure and content organisation."""
 
     def get_agent_name(self) -> str:

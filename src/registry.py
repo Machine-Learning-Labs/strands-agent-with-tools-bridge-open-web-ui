@@ -3,22 +3,22 @@ Registry for all available specialised agents.
 """
 
 from typing import Dict, Type, List, Optional
-from ..agents.base_agent import BaseSpecialisedAgent
+from .agents.base_agent import BaseSpecialisedAgent
 
 # Import utility agents
-from ..agents.utility.calculator_agent import CalculatorAgent
-from ..agents.utility.python_repl_agent import PythonReplAgent
-from ..agents.utility.http_request_agent import HttpRequestAgent
+from .agents.utility.calculator_agent import CalculatorAgent
+from .agents.utility.python_repl_agent import PythonReplAgent
+from .agents.utility.http_request_agent import HttpRequestAgent
 
 # Import file agents
-from ..agents.files.file_read_agent import FileReadAgent
-from ..agents.files.file_write_agent import FileWriteAgent
+from .agents.files.file_read_agent import FileReadAgent
+from .agents.files.file_write_agent import FileWriteAgent
 
 # Import web agents
-from ..agents.web.tavily_search_agent import TavilySearchAgent
+from .agents.web.tavily_search_agent import TavilySearchAgent
 
 # Import base agents
-from ..agents.base.alfred_agent import AlfredAgent
+from .agents.base.alfred_agent import AlfredAgent
 
 
 class AgentRegistry:

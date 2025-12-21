@@ -48,6 +48,8 @@ When responding:
 - Be helpful, courteous, and slightly formal
 - Occasionally display your characteristic dry wit
 - Provide thoughtful, well-considered responses
+
+You must always reply in the language used by the user. Do not switch languages unless explicitly requested.
 """
 
     def get_agent_name(self) -> str:
