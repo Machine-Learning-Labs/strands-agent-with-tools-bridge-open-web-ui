@@ -5,6 +5,7 @@ Business logic for chat completions and message processing.
 import time
 import uuid
 import base64
+import logging
 import re
 import requests
 from typing import List, Union, Optional
@@ -21,6 +22,7 @@ from .models import (
 )
 from .registry import AgentRegistry
 
+logger = logging.getLogger(__name__)
 
 class ChatService:
     """Service class handling chat completion logic and message processing."""
@@ -56,10 +58,10 @@ class ChatService:
                     status_code=400,
                     detail=f"Unable to fetch image from URL: {response.status_code}",
                 )
-        except requests.RequestException as e:
-            raise HTTPException(
-                status_code=400, detail=f"Error fetching image: {str(e)}"
-            )
+        except requests.RequestException:
+            # Log the details on the server, keep the client message generic
+            logger.exception("Error fetching image from URL")
+            raise HTTPException(status_code=400, detail="Error fetching image")
 
     def convert_message_to_strands_format(self, message: Message):
         """
@@ -210,7 +212,9 @@ class ChatService:
                 usage=usage,
             )
 
-        except Exception as e:
-            raise HTTPException(
-                status_code=500, detail=f"Error processing request: {str(e)}"
-            )
+        except HTTPException:
+            # Keep the intended status code (400/404) instead of turning it into a 500
+            raise
+        except Exception:
+            logger.exception("Error processing chat completion")
+            raise HTTPException(status_code=500, detail="Error processing request")

@@ -2,8 +2,11 @@
 Registry for all available specialised agents.
 """
 
+import logging
 from typing import Dict, Type, List, Optional
 from .agents.base_agent import BaseSpecialisedAgent
+
+logger = logging.getLogger(__name__)
 
 # Import utility agents
 from .agents.utility.calculator_agent import CalculatorAgent
@@ -116,8 +119,10 @@ class AgentRegistry:
                         "tools": temp_instance.get_tool_names(),
                     }
                 )
-            except Exception as e:
-                # If agent creation fails, provide basic info
+            except Exception:
+                # If agent creation fails, provide basic info.
+                # Details go to the server log only, never to the client.
+                logger.exception("Could not create agent '%s'", agent_id)
                 agents.append(
                     {
                         "id": agent_id,
@@ -125,7 +130,7 @@ class AgentRegistry:
                         "description": f"Agent class: {agent_class.__name__}",
                         "category": cls._get_category_for_agent(agent_id),
                         "tools": [],
-                        "error": str(e),
+                        "error": "Agent unavailable",
                     }
                 )
         return agents
@@ -174,10 +179,11 @@ class AgentRegistry:
                 "class_name": agent_class.__name__,
                 "module": agent_class.__module__,
             }
-        except Exception as e:
+        except Exception:
+            logger.exception("Could not create agent '%s'", agent_id)
             return {
                 "id": agent_id,
-                "error": str(e),
+                "error": "Agent unavailable",
                 "class_name": cls._agents[agent_id].__name__,
             }
 
